@@ -20,7 +20,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
     setIsOpen(!isOpen);
   };
 
-  // Manejar clics fuera del componente para cerrar el dropdown
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -32,18 +32,18 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Verifica si todos están seleccionados
+  // Check if all options are checked
   const allChecked = localOptions.every(opt => opt.checked);
 
-  // Maneja cambios de checkboxes
+  // Handle checkbox change
   const handleCheckboxChange = (id: string) => {
     if (id === 'all') {
-      // Si se hace clic en "Todos", activa o desactiva todos
+      // If "all" is checked/unchecked, toggle all options
       setLocalOptions(prev =>
         prev.map(opt => ({ ...opt, checked: !allChecked }))
       );
     } else {
-      // Cambiar individualmente una opción
+      // Chanfege the state of the specific option
       setLocalOptions(prev =>
         prev.map(opt =>
           opt.id === id ? { ...opt, checked: !opt.checked } : opt
@@ -52,7 +52,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
     }
   };
 
-  // Etiquetas seleccionadas
+  // Selected labels
   const selectedLabels = localOptions
     .filter(option => option.checked)
     .map(option => option.label)
@@ -73,7 +73,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
         className={`dropdown-menu ${isOpen ? 'show' : ''}`}
         aria-labelledby="dropdownMenuButton"
       >
-        {/* Opción "Todos" */}
+        {/* "All" option */}
         <li className="px-3">
           <div className="form-check">
             <input
@@ -84,13 +84,13 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
               onChange={() => handleCheckboxChange('all')}
             />
             <label className="form-check-label" htmlFor="all">
-              Todos
+              All
             </label>
           </div>
         </li>
         <hr className="dropdown-divider" />
 
-        {/* Otras opciones */}
+        {/* Other options */}
         {localOptions.map(option => (
           <li key={option.id} className="px-3">
             <div className="form-check">
