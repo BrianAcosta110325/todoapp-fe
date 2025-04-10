@@ -1,17 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
+import { Api } from '../../services/Api';
 
 function Filter() {
-  let priorities = [
-    { id: '1', label: 'High', checked: false },
-    { id: '2', label: 'Medium', checked: false },
-    { id: '3', label: 'Low', checked: false },
-  ]
-  let status = [
-    { id: '1', label: 'Done', checked: false },
-    { id: '2', label: 'Undone', checked: false }
-  ]
+  const [priorities, setPriorities] = useState([
+    { id: 'High', checked: false },
+    { id: 'Medium', checked: false },
+    { id: 'Low', checked: false },
+  ]);
+
+  const [status, setStatus] = useState([
+    { id: 'Done', checked: false },
+    { id: 'Undone', checked: false },
+  ]);
+
+  const [searchText, setSearchText] = useState("");
+
+  const updatePriorities = (updatedPriorities: { id: string; checked: boolean }[]) => {
+    setPriorities(updatedPriorities);
+  };
+
+  const updateStatus = (updatedStatus: { id: string; checked: boolean }[]) => {
+    setStatus(updatedStatus);
+  };
+
+  const applyFilter = () => {
+    const completed = status[0].checked === status[1].checked ? null : status[0].checked;
+    const prioritiesChecked: string[] = priorities.filter(option => option.checked === true).map(option => option.id);
+
+    const queryParams = new URLSearchParams({
+      page: '0',
+      text: searchText,
+      priorities: prioritiesChecked.join(','),
+    });
+
+    if (completed != null) {
+      queryParams.append('completed', completed.toString());
+    }
+
+    Api.get('todos', queryParams.toString()).then((response) => {
+      console.log(response);
+      // Aquí puedes manejar la respuesta de la API
+    })
+  };
 
   return (
     <div className="container mt-4">
@@ -27,6 +59,8 @@ function Filter() {
               id="search"
               className="form-control flex-grow-1"
               placeholder="Search by text..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
       
@@ -34,19 +68,19 @@ function Filter() {
             {/* Priorities */}
             <div className="d-flex align-items-center mb-3">
               <label htmlFor="priority" className="form-label me-2 mb-0" style={{ width: '60px' }}>Priority</label>
-              <CheckboxDropdown options={priorities} />
+              <CheckboxDropdown options={priorities} updateOptions={updatePriorities} />
             </div>
 
             {/* Status */}
             <div className="col d-flex align-items-center mb-3">
               <label htmlFor="status" className="form-label me-2 mb-0" style={{ width: '60px' }}>Status</label>
-              <CheckboxDropdown options={status} />
+              <CheckboxDropdown options={status} updateOptions={updateStatus} />
             </div>
+
             <button
               className="col-auto btn btn-primary me-2 mb-0"
               type="button"
-              id="applyFilterButton"
-              onClick={() => {}}
+              onClick={applyFilter}
               style={{ width: '100px' }}
             >
               Search

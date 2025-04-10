@@ -3,15 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Option {
   id: string;
-  label: string;
   checked: boolean;
 }
 
 interface CheckboxDropdownProps {
   options: Option[];
+  updateOptions: (updatedOptions: Option[]) => void; // Recibe la función para actualizar el estado
 }
 
-const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
+const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options, updateOptions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [localOptions, setLocalOptions] = useState<Option[]>(options);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
     setIsOpen(!isOpen);
   };
 
-  // Manejar clics fuera del componente para cerrar el dropdown
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -32,30 +32,29 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Verifica si todos están seleccionados
+  // Check if all options are checked
   const allChecked = localOptions.every(opt => opt.checked);
 
-  // Maneja cambios de checkboxes
+  // Handle checkbox change
   const handleCheckboxChange = (id: string) => {
     if (id === 'all') {
-      // Si se hace clic en "Todos", activa o desactiva todos
-      setLocalOptions(prev =>
-        prev.map(opt => ({ ...opt, checked: !allChecked }))
-      );
+      // If "all" is checked/unchecked, toggle all options
+      const updatedOptions = localOptions.map(opt => ({ ...opt, checked: !allChecked }));
+      setLocalOptions(updatedOptions);
+      updateOptions(updatedOptions); // Update the parent state
     } else {
-      // Cambiar individualmente una opción
-      setLocalOptions(prev =>
-        prev.map(opt =>
-          opt.id === id ? { ...opt, checked: !opt.checked } : opt
-        )
+      const updatedOptions = localOptions.map(opt =>
+        opt.id === id ? { ...opt, checked: !opt.checked } : opt
       );
+      setLocalOptions(updatedOptions);
+      updateOptions(updatedOptions); // Update the parent state
     }
   };
 
-  // Etiquetas seleccionadas
+  // Selected labels
   const selectedLabels = localOptions
     .filter(option => option.checked)
-    .map(option => option.label)
+    .map(option => option.id)
     .join(', ') || 'Select Options';
 
   return (
@@ -63,7 +62,6 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
       <button
         className="btn btn-primary dropdown-toggle"
         type="button"
-        id="dropdownMenuButton"
         aria-expanded={isOpen ? 'true' : 'false'}
         onClick={toggleDropdown}
       >
@@ -73,7 +71,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
         className={`dropdown-menu ${isOpen ? 'show' : ''}`}
         aria-labelledby="dropdownMenuButton"
       >
-        {/* Opción "Todos" */}
+        {/* "All" option */}
         <li className="px-3">
           <div className="form-check">
             <input
@@ -84,13 +82,13 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
               onChange={() => handleCheckboxChange('all')}
             />
             <label className="form-check-label" htmlFor="all">
-              Todos
+              All
             </label>
           </div>
         </li>
         <hr className="dropdown-divider" />
 
-        {/* Otras opciones */}
+        {/* Other options */}
         {localOptions.map(option => (
           <li key={option.id} className="px-3">
             <div className="form-check">
@@ -102,7 +100,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
                 onChange={() => handleCheckboxChange(option.id)}
               />
               <label className="form-check-label" htmlFor={option.id}>
-                {option.label}
+                {option.id}
               </label>
             </div>
           </li>
