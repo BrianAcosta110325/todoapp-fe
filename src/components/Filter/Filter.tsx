@@ -1,29 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
 import { Api } from '../../services/Api';
 
 function Filter() {
-  let priorities = [
+  const [priorities, setPriorities] = useState([
     { id: 'High', checked: false },
     { id: 'Medium', checked: false },
     { id: 'Low', checked: false },
-  ]
-  let status = [
+  ]);
+
+  const [status, setStatus] = useState([
     { id: 'Done', checked: false },
-    { id: 'Undone', checked: false }
-  ]
+    { id: 'Undone', checked: false },
+  ]);
+
+  const [searchText, setSearchText] = useState("");
+
+  const updatePriorities = (updatedPriorities: { id: string; checked: boolean }[]) => {
+    setPriorities(updatedPriorities);
+  };
+
+  const updateStatus = (updatedStatus: { id: string; checked: boolean }[]) => {
+    setStatus(updatedStatus);
+  };
 
   const applyFilter = () => {
+    const completed = status[0].checked === status[1].checked ? null : status[0].checked;
+    const prioritiesChecked: string[] = priorities.filter(option => option.checked === true).map(option => option.id);
+
+    console.log(prioritiesChecked.join(','));
+
     const queryParams = new URLSearchParams({
       page: '0',
-      size: '10',
-      // searchText: '...',
-      // status: '...',
-      // etc.
-    }).toString();
+      text: searchText,
+      priorities: prioritiesChecked.join(','),
+    });
 
-    Api.get('todos', queryParams).then((response) => {
+    if (completed != null) {
+      queryParams.append('completed', completed.toString());
+    }
+
+    Api.get('todos', queryParams.toString()).then((response) => {
       console.log(response);
       // Aquí puedes manejar la respuesta de la API
     })
@@ -43,6 +61,8 @@ function Filter() {
               id="search"
               className="form-control flex-grow-1"
               placeholder="Search by text..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
       
@@ -50,18 +70,18 @@ function Filter() {
             {/* Priorities */}
             <div className="d-flex align-items-center mb-3">
               <label htmlFor="priority" className="form-label me-2 mb-0" style={{ width: '60px' }}>Priority</label>
-              <CheckboxDropdown options={priorities} />
+              <CheckboxDropdown options={priorities} updateOptions={updatePriorities} />
             </div>
 
             {/* Status */}
             <div className="col d-flex align-items-center mb-3">
               <label htmlFor="status" className="form-label me-2 mb-0" style={{ width: '60px' }}>Status</label>
-              <CheckboxDropdown options={status} />
+              <CheckboxDropdown options={status} updateOptions={updateStatus} />
             </div>
+
             <button
               className="col-auto btn btn-primary me-2 mb-0"
               type="button"
-              id="applyFilterButton"
               onClick={applyFilter}
               style={{ width: '100px' }}
             >

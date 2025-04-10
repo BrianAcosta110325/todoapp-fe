@@ -8,9 +8,10 @@ interface Option {
 
 interface CheckboxDropdownProps {
   options: Option[];
+  updateOptions: (updatedOptions: Option[]) => void; // Recibe la función para actualizar el estado
 }
 
-const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
+const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options, updateOptions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [localOptions, setLocalOptions] = useState<Option[]>(options);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -38,16 +39,15 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
   const handleCheckboxChange = (id: string) => {
     if (id === 'all') {
       // If "all" is checked/unchecked, toggle all options
-      setLocalOptions(prev =>
-        prev.map(opt => ({ ...opt, checked: !allChecked }))
-      );
+      const updatedOptions = localOptions.map(opt => ({ ...opt, checked: !allChecked }));
+      setLocalOptions(updatedOptions);
+      updateOptions(updatedOptions); // Update the parent state
     } else {
-      // Chanfege the state of the specific option
-      setLocalOptions(prev =>
-        prev.map(opt =>
-          opt.id === id ? { ...opt, checked: !opt.checked } : opt
-        )
+      const updatedOptions = localOptions.map(opt =>
+        opt.id === id ? { ...opt, checked: !opt.checked } : opt
       );
+      setLocalOptions(updatedOptions);
+      updateOptions(updatedOptions); // Update the parent state
     }
   };
 
@@ -62,7 +62,6 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
       <button
         className="btn btn-primary dropdown-toggle"
         type="button"
-        id="dropdownMenuButton"
         aria-expanded={isOpen ? 'true' : 'false'}
         onClick={toggleDropdown}
       >
