@@ -13,6 +13,13 @@ function Filter() {
     { id: '2', label: 'Undone', checked: false }
   ]
 
+  const applyFilter = () => {
+    fetch('http://localhost:9090/api/todos/1')  // Usa una ruta relativa, no la ruta completa
+      // .then(res => res.json())  // Asegúrate de convertir la respuesta en JSON
+      .then(data => console.log("arreglo", data))
+      .catch(err => console.error(err));
+  };  
+
   return (
     <div className="container mt-4">
       {/* Filter */}
@@ -46,7 +53,7 @@ function Filter() {
               className="col-auto btn btn-primary me-2 mb-0"
               type="button"
               id="applyFilterButton"
-              onClick={() => {}}
+              onClick={applyFilter}
               style={{ width: '100px' }}
             >
               Search
