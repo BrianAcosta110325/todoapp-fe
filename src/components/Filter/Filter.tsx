@@ -21,7 +21,7 @@ function Filter() {
           
           {/* Text Input */}
           <div className="d-flex align-items-center mb-3">
-            <label htmlFor="search" className="form-label me-2 mb-0">Name</label>
+            <label htmlFor="search" className="form-label me-4 mb-0">Name</label>
             <input
               type="text"
               id="search"
@@ -29,17 +29,28 @@ function Filter() {
               placeholder="Search by text..."
             />
           </div>
-          
-          {/* Priorities */}
-          <div className="d-flex align-items-center mb-3">
-            <label htmlFor="search" className="form-label me-2 mb-0">Priority</label>
-            <CheckboxDropdown options={priorities} />
-          </div>
+      
+          <div className="row align-items-center mb-3">
+            {/* Priorities */}
+            <div className="d-flex align-items-center mb-3">
+              <label htmlFor="priority" className="form-label me-2 mb-0" style={{ width: '60px' }}>Priority</label>
+              <CheckboxDropdown options={priorities} />
+            </div>
 
-          {/* Status */}
-          <div className="d-flex align-items-center mb-3">
-            <label htmlFor="search" className="form-label me-2 mb-0">Status</label>
-            <CheckboxDropdown options={status} />
+            {/* Status */}
+            <div className="col d-flex align-items-center mb-3">
+              <label htmlFor="status" className="form-label me-2 mb-0" style={{ width: '60px' }}>Status</label>
+              <CheckboxDropdown options={status} />
+            </div>
+            <button
+              className="col-auto btn btn-primary me-2 mb-0"
+              type="button"
+              id="applyFilterButton"
+              onClick={() => {}}
+              style={{ width: '100px' }}
+            >
+              Search
+            </button>
           </div>
         </div>
       </div>
