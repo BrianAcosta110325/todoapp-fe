@@ -1,24 +1,33 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
+import { Api } from '../../services/Api';
 
 function Filter() {
   let priorities = [
-    { id: '1', label: 'High', checked: false },
-    { id: '2', label: 'Medium', checked: false },
-    { id: '3', label: 'Low', checked: false },
+    { id: 'High', checked: false },
+    { id: 'Medium', checked: false },
+    { id: 'Low', checked: false },
   ]
   let status = [
-    { id: '1', label: 'Done', checked: false },
-    { id: '2', label: 'Undone', checked: false }
+    { id: 'Done', checked: false },
+    { id: 'Undone', checked: false }
   ]
 
   const applyFilter = () => {
-    fetch('http://localhost:9090/api/todos/1')  // Usa una ruta relativa, no la ruta completa
-      // .then(res => res.json())  // Asegúrate de convertir la respuesta en JSON
-      .then(data => console.log("arreglo", data))
-      .catch(err => console.error(err));
-  };  
+    const queryParams = new URLSearchParams({
+      page: '0',
+      size: '10',
+      // searchText: '...',
+      // status: '...',
+      // etc.
+    }).toString();
+
+    Api.get('todos', queryParams).then((response) => {
+      console.log(response);
+      // Aquí puedes manejar la respuesta de la API
+    })
+  };
 
   return (
     <div className="container mt-4">

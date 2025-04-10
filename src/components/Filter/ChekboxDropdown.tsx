@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Option {
   id: string;
-  label: string;
   checked: boolean;
 }
 
@@ -55,7 +54,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
   // Selected labels
   const selectedLabels = localOptions
     .filter(option => option.checked)
-    .map(option => option.label)
+    .map(option => option.id)
     .join(', ') || 'Select Options';
 
   return (
@@ -102,7 +101,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
                 onChange={() => handleCheckboxChange(option.id)}
               />
               <label className="form-check-label" htmlFor={option.id}>
-                {option.label}
+                {option.id}
               </label>
             </div>
           </li>
