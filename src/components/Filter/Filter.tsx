@@ -29,8 +29,6 @@ function Filter() {
     const completed = status[0].checked === status[1].checked ? null : status[0].checked;
     const prioritiesChecked: string[] = priorities.filter(option => option.checked === true).map(option => option.id);
 
-    console.log(prioritiesChecked.join(','));
-
     const queryParams = new URLSearchParams({
       page: '0',
       text: searchText,
