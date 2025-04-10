@@ -8,6 +8,10 @@ function Filter() {
     { id: '2', label: 'Medium', checked: false },
     { id: '3', label: 'Low', checked: false },
   ]
+  let status = [
+    { id: '1', label: 'Done', checked: false },
+    { id: '2', label: 'Undone', checked: false }
+  ]
 
   return (
     <div className="container mt-4">
@@ -30,6 +34,12 @@ function Filter() {
           <div className="d-flex align-items-center mb-3">
             <label htmlFor="search" className="form-label me-2 mb-0">Priority</label>
             <CheckboxDropdown options={priorities} />
+          </div>
+
+          {/* Status */}
+          <div className="d-flex align-items-center mb-3">
+            <label htmlFor="search" className="form-label me-2 mb-0">Status</label>
+            <CheckboxDropdown options={status} />
           </div>
         </div>
       </div>
