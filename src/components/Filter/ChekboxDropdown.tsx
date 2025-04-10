@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Option {
@@ -14,6 +14,7 @@ interface CheckboxDropdownProps {
 const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [localOptions, setLocalOptions] = useState<Option[]>(options);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -27,13 +28,27 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options }) => {
     );
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+
   const selectedLabels = localOptions
     .filter(option => option.checked)
     .map(option => option.label)
     .join(', ') || 'Select Options';
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" ref={dropdownRef}>
       <button
         className="btn btn-primary dropdown-toggle"
         type="button"
