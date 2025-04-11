@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
 import { Api } from '../../services/Api';
+import { QueryParams } from '../../interfaces/QueryParams';
 
 function Filter() {
   const [priorities, setPriorities] = useState([
@@ -29,20 +30,20 @@ function Filter() {
     const completed = status[0].checked === status[1].checked ? null : status[0].checked;
     const prioritiesChecked: string[] = priorities.filter(option => option.checked === true).map(option => option.id);
 
-    const queryParams = new URLSearchParams({
+  const queryParams: QueryParams = {
       page: '0',
       text: searchText,
-    });
+    };
 
     if (completed != null) {
-      queryParams.append('completed', completed.toString());
+      queryParams['completed'] = completed.toString();
     }
 
     if(prioritiesChecked.length > 0) {
-      queryParams.append('priorities', prioritiesChecked.join(','));
+      queryParams['priorities'] = prioritiesChecked.join(',');
     }
 
-    Api.get('todos', queryParams.toString()).then((response) => {
+    Api.get('todos', queryParams).then((response) => {
       // console.log(response);
       // Aquí puedes manejar la respuesta de la API
     })

@@ -1,8 +1,14 @@
+import { QueryParams } from "../interfaces/QueryParams";
+
 const API_URL = "http://localhost:9090/api"
 
 export const Api = {
-  get: async (path: string, params: string) => {
-    const response = await fetch(`${API_URL}/${path}?${params}`);
+  get: async (path: string, params?: QueryParams) => {
+    const queryParams = params
+      ? new URLSearchParams(params.toString())
+      : '';
+  
+    const response = await fetch(`${API_URL}/${path}${queryParams ? '?' + queryParams : ''}`);
     return response.json();
   },
 
