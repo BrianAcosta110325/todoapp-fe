@@ -5,7 +5,7 @@ const API_URL = "http://localhost:9090/api"
 export const Api = {
   get: async (path: string, params?: QueryParams) => {
     const queryParams = params
-      ? new URLSearchParams(params.toString())
+      ? new URLSearchParams(params as Record<string, any>)
       : '';
   
     const response = await fetch(`${API_URL}/${path}${queryParams ? '?' + queryParams : ''}`);
