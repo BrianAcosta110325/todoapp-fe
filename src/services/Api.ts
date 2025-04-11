@@ -12,11 +12,20 @@ export const Api = {
     return response.json();
   },
 
-  post: async (path: string, body: any) => {
+  post: async (path: string, body?: any) => {
     const response = await fetch(`${API_URL}/${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    return response.json();
+  },
+
+  put: async (path: string, body?: any) => {
+    const response = await fetch(`${API_URL}/${path}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
     });
     return response.json();
   },

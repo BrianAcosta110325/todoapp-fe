@@ -7,7 +7,7 @@ import { Api } from '../../services/Api';
 import { Todo } from '../../interfaces/Todo';
 
 function App() {
-  const [todos, setTodos] = useState<any[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   // Load initial todos
   useEffect(() => {
@@ -25,7 +25,7 @@ function App() {
     <div>
       <Filter onApplyFilter={handleFilteredTodos} />
       <CreateTodo />
-      <List todos={todos} />
+      <List todos={todos} setTodos={setTodos} />
     </div>
   );
 }
