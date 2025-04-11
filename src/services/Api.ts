@@ -7,13 +7,12 @@ export const Api = {
     return response.json();
   },
 
-  // post: async (path: string, body: any) => {
-    
-  //   const response = await fetch(`${API_URL}/${path}`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(body),
-  //   });
-  //   return response.json();
-  // },
+  post: async (path: string, body: any) => {
+    const response = await fetch(`${API_URL}/${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return response.json();
+  },
 };

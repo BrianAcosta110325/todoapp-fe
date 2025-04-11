@@ -32,11 +32,14 @@ function Filter() {
     const queryParams = new URLSearchParams({
       page: '0',
       text: searchText,
-      priorities: prioritiesChecked.join(','),
     });
 
     if (completed != null) {
       queryParams.append('completed', completed.toString());
+    }
+
+    if(prioritiesChecked.length > 0) {
+      queryParams.append('priorities', prioritiesChecked.join(','));
     }
 
     Api.get('todos', queryParams.toString()).then((response) => {
