@@ -2,7 +2,6 @@ const API_URL = "http://localhost:9090/api"
 
 export const Api = {
   get: async (path: string, params: string) => {
-    console.log(`${API_URL}/${path}/${params}`);
     const response = await fetch(`${API_URL}/${path}?${params}`);
     return response.json();
   },

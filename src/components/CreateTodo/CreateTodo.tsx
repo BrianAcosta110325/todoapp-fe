@@ -28,7 +28,7 @@ function CreateTodo() {
       dueDate,
     };
     Api.post('todos', newTodo).then((response: any) => {
-      console.log(response);
+      // console.log(response);
     })
   }
 

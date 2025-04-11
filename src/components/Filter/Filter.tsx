@@ -43,7 +43,7 @@ function Filter() {
     }
 
     Api.get('todos', queryParams.toString()).then((response) => {
-      console.log(response);
+      // console.log(response);
       // Aquí puedes manejar la respuesta de la API
     })
   };
