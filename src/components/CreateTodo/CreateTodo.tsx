@@ -1,36 +1,45 @@
-import React, { useState } from 'react';
-import { Api } from '../../services/Api';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TodoForm from '../../Utils/CreateEditTodoForm';
+import { TodoService } from '../../services/TodoService';
+import { Todo } from '../../interfaces/Todo';
 
-function CreateTodo() {
+interface CreateTodoProps {
+  onCreateTodo: () => void;
+}
+
+function CreateTodo({ onCreateTodo }: CreateTodoProps) {
   // State to control the visibility of the form
   const [isFormVisible, setIsFormVisible] = React.useState(false);
 
-  // Data for priorities
-  const priorities = [
-    "High",
-    "Medium",
-    "Low",
-  ]
-
   // Input data
-  const [text, setText] = useState("");
-  const [priority, setPriority] = useState("");
-  const [dueDate, setDueDate] = useState("");
-
+  const [newTodo, setNewTodo] = useState<Todo>({
+    id: -1,
+    text: "",
+    priority: "High",
+    dueDate: "",
+    completed: false,
+  });
 
   // Function to handle form submission
   const submitForm = () => {
-    // e.preventDefault();
-    const newTodo = {
-      text,
-      priority,
-      dueDate,
-    };
-    Api.post('todos', newTodo).then((response: any) => {
-      // console.log(response);
+    TodoService.addTodo(newTodo).then((response: any) => {
+      onCreateTodo();
+      setIsFormVisible(false);
     })
   }
+
+  useEffect(() => {
+    if (!isFormVisible) {
+      setNewTodo({
+        id: -1,
+        text: "",
+        priority: "High",
+        dueDate: "",
+        completed: false,
+      });
+    }
+  }, [isFormVisible]);
 
   return (
     <div className="container mt-4">
@@ -41,70 +50,14 @@ function CreateTodo() {
         + New Todo
       </button>
 
-      {isFormVisible && (
-        <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Create Todo</h5>
-                <button type="button" className="btn-close" onClick={() => setIsFormVisible(false)}></button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  {/* Text Input */}
-                  <div className="d-flex align-items-center mb-3">
-                    <label htmlFor="text" className="form-label me-2 mb-0" style={{ width: '100px' }}>Name</label>
-                    <input
-                      type="text"
-                      id="text"
-                      className="form-control flex-grow-1"
-                      value={text}
-                      onChange={(e) => setText(e.target.value)}
-                    />
-                  </div>
-
-                  {/* Priorities */}
-                  <div className="d-flex align-items-center mb-3">
-                    <label htmlFor="priority" className="form-label me-2 mb-0" style={{ width: '100px' }}>Priority</label>
-                    <select
-                    className="form-select"
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
-                    >
-                      {priorities.map((p) => (
-                        <option key={p} value={p}>
-                        {p}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  {/* Due Date */}
-                  <div className="d-flex align-items-center mb-3">
-                    <label htmlFor="dueDate" className="form-label me-2 mb-0" style={{ width: '100px' }}>Due Date</label>
-                    <input
-                      type="date"
-                      id="dueDate"
-                      className="form-control flex-grow-1"
-                      value={dueDate}
-                      onChange={(e) => setDueDate(e.target.value)}
-                    />
-                  </div>
-                  <div className="d-flex justify-content-end">
-                    <button 
-                      type="submit" 
-                      className="btn btn-primary justify-content-end" 
-                      onClick={() => {
-                        submitForm();
-                        setIsFormVisible(false);
-                      }}
-                    >Create Todo</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {isFormVisible && 
+      <TodoForm 
+        todo={newTodo}
+        setTodo={setNewTodo}
+        title='Create Todo'
+        submitForm={submitForm} 
+        setIsFormVisible={setIsFormVisible}
+      />}
     </div>
   );
 }

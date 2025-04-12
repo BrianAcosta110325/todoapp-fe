@@ -29,4 +29,11 @@ export const Api = {
     });
     return response.json();
   },
+
+  delete: async (path: string) => {
+    const response = await fetch(`${API_URL}/${path}`, {
+      method: 'DELETE',
+    });
+    return response;
+  },
 };
