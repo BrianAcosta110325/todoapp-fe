@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use, useEffect } from 'react';
 
 interface PaginationProps {
   page: number; // índice base 0
@@ -9,8 +9,17 @@ interface PaginationProps {
 function PaginationMenu({ page, setPage, totalPages }: PaginationProps) {
   const renderPageNumbers = () => {
     const pages = [];
-
-    for (let i = 0; i < totalPages; i++) {
+    const maxPagesToShow = 5;
+  
+    let startPage = Math.max(0, page - Math.floor(maxPagesToShow / 2));
+    let endPage = startPage + maxPagesToShow;
+  
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(0, endPage - maxPagesToShow);
+    }
+  
+    for (let i = startPage; i < endPage; i++) {
       pages.push(
         <li key={i} className={`page-item ${page === i ? 'active' : ''}`}>
           <button className="page-link" onClick={() => setPage(i)}>
@@ -19,12 +28,12 @@ function PaginationMenu({ page, setPage, totalPages }: PaginationProps) {
         </li>
       );
     }
-
+  
     return pages;
-  };
+  };  
 
   return (
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" style={{ display: 'flex', justifyContent: 'center' }}>
       <ul className="pagination">
         {/* Primera página */}
         <li className={`page-item ${page === 0 ? 'disabled' : ''}`}>
