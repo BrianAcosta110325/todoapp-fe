@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Api } from '../../services/Api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,9 +15,8 @@ function CreateTodo() {
 
   // Input data
   const [text, setText] = useState("");
-  const [priority, setPriority] = useState("");
+  const [priority, setPriority] = useState("High");
   const [dueDate, setDueDate] = useState("");
-
 
   // Function to handle form submission
   const submitForm = () => {
@@ -31,6 +30,14 @@ function CreateTodo() {
       // console.log(response);
     })
   }
+
+  useEffect(() => {
+    if (!isFormVisible) {
+      setText("");
+      setPriority("High");
+      setDueDate("");
+    }
+  }, [isFormVisible]);
 
   return (
     <div className="container mt-4">
