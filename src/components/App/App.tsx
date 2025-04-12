@@ -14,6 +14,13 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
   // Filter
   const [filterParams, setFilterParams] = useState<QueryParams>({ text: '' });
+  // Metrics
+  const [metrics, setMetrics] = useState({
+    averageTimeDifference: '',
+    averageLowTimeDifference: '',
+    averageMediumTimeDifference: '',
+    averageHighTimeDifference: '',
+  });
 
   const applyFilter = () => {
     const queryParams: QueryParams = {
@@ -32,6 +39,12 @@ function App() {
     Api.get('todos', queryParams).then((response) => {
       setTodos(response.data);
       setTotalPages(response.totalPages);
+      setMetrics({
+        averageTimeDifference: response.averageTimeDifference,
+        averageLowTimeDifference: response.averageLowTimeDifference,
+        averageMediumTimeDifference: response.averageMediumTimeDifference,
+        averageHighTimeDifference: response.averageHighTimeDifference,
+      });
     });
   };
 
