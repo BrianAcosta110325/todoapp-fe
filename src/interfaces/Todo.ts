@@ -1,7 +1,7 @@
 export interface Todo {
-    id: number;
+    id?: number;
     text: string;
     priority: string;
     dueDate: string;
-    completed: boolean;
+    completed?: boolean;
 }
