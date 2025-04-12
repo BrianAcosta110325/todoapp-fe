@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Api } from "../../services/Api";
 import { Todo } from "../../interfaces/Todo";
 import PaginationMenu from "./Pagination/PaginationMenu";
+import { TodoService } from "../../services/TodoService";
+import CreateEditTodoForm from "../../Utils/CreateEditTodoForm";
 
 interface PaginationProps {
   page: number;
@@ -11,32 +12,60 @@ interface PaginationProps {
 }
 
 interface ListProps {
+  onEditTodo: () => void;
   todos: Todo[];
   setTodos: (todo: Todo[]) => void;
   pagination: PaginationProps;
 }
 
 
-function List({ todos, setTodos, pagination }: ListProps) {
-  // const [loading, setLoading] = useState(true);
-  // const [page, setPage] = useState(0);
+function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
+  // State to control the visibility of the form
+  const [isFormVisible, setIsFormVisible] = React.useState(false);
+
+  // Input data
+  const [editTodo, setEditTodo] = useState<Todo>({
+    id: -1,
+    text: "",
+    priority: "High",
+    dueDate: "",
+    completed: false,
+  });
+
+  // Function to handle form submission
+  const submitForm = () => {
+    TodoService.updateTodo(editTodo).then((response: any) => {
+      onEditTodo();
+      setIsFormVisible(false);
+    })
+  }
+
+  // useEffect(() => {
+  //   if (!isFormVisible) {
+  //     setText("");
+  //     setPriority("High");
+  //     setDueDate("");
+  //   }
+  // }, [isFormVisible]);
 
   const handleCheckboxChange = (todo: Todo) => {
-    const url = `todos/${todo.id}/${todo.completed ? 'undone' : 'done' }`;
-
     try {
-      const request = todo.completed
-        ? Api.put(url)
-        : Api.post(url);
+      if(todo.id !== undefined) {
+        const request = todo.completed
+          ? TodoService.setAsUndone(todo.id)
+          : TodoService.setAsDone(todo.id);
 
-      request.then(() => {
-        // Update the state using React hooks (if needed, add state management logic here)
-        setTodos(
-          todos.map((t) =>
-            t.id === todo.id ? { ...t, completed: !t.completed } : t
-          )
-        );
-      });
+        request.then(() => {
+          // Update the state using React hooks (if needed, add state management logic here)
+          setTodos(
+            todos.map((t) =>
+              t.id === todo.id ? { ...t, completed: !t.completed } : t
+            )
+          );
+        });
+      } else {
+        throw new Error("Todo ID is undefined");
+      }
     } catch (error) {
       console.error('Request failed:', error);
     }  
@@ -73,7 +102,15 @@ function List({ todos, setTodos, pagination }: ListProps) {
                 <td>{todo.priority}</td>
                 <td>{todo.dueDate || "N/A"}</td>
                 <td>
-                  <button className="btn btn-sm btn-primary me-2">Edit</button>
+                    <button
+                      className="btn btn-sm btn-primary me-2"
+                      onClick={() => {
+                        setEditTodo(todo);
+                        setIsFormVisible(true);
+                      }}
+                    >
+                    Edit
+                    </button>
                   <button className="btn btn-sm btn-danger">Delete</button>
                 </td>
               </tr>
@@ -94,6 +131,19 @@ function List({ todos, setTodos, pagination }: ListProps) {
           )}
         </table>
       )}
+
+      {isFormVisible && (
+      <CreateEditTodoForm 
+        text={editTodo.text}
+        setText={(text) => setEditTodo({ ...editTodo, text })}
+        priority={editTodo.priority}
+        setPriority={(priority) => setEditTodo({ ...editTodo, priority })}
+        dueDate={editTodo.dueDate}
+        setDueDate={(dueDate) => setEditTodo({ ...editTodo, dueDate })}
+        submitForm={submitForm}
+        setIsFormVisible={setIsFormVisible}
+        title="Edit Todo"
+      />)}
     </div>
   );
 }

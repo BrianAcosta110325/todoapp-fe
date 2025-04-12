@@ -3,10 +3,10 @@ import Filter from '../Filter/Filter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateTodo from '../CreateTodo/CreateTodo';
 import List from '../List/List';
-import { Api } from '../../services/Api';
 import { Todo } from '../../interfaces/Todo';
 import { QueryParams } from '../../interfaces/QueryParams';
 import Metrics from '../Metrics/Metrics';
+import { TodoService } from '../../services/TodoService';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -37,7 +37,7 @@ function App() {
       queryParams.priorities = filterParams.priorities;
     }
 
-    Api.get('todos', queryParams).then((response) => {
+    TodoService.getTodos(queryParams).then((response) => {
       setTodos(response.data);
       setTotalPages(response.totalPages);
       setMetrics({
@@ -68,6 +68,9 @@ function App() {
         }}
       />
       <List
+        onEditTodo={() => {
+          applyFilter();
+        }}
         todos={todos}
         setTodos={setTodos}
         pagination={{ page, setPage, totalPages }}
