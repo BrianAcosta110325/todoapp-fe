@@ -34,6 +34,6 @@ export const Api = {
     const response = await fetch(`${API_URL}/${path}`, {
       method: 'DELETE',
     });
-    return response.json();
+    return response;
   },
 };

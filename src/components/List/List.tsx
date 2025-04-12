@@ -40,13 +40,11 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
     })
   }
 
-  // useEffect(() => {
-  //   if (!isFormVisible) {
-  //     setText("");
-  //     setPriority("High");
-  //     setDueDate("");
-  //   }
-  // }, [isFormVisible]);
+  const deleteTodo = (id: number) => {
+    TodoService.deleteTodo(id).then(() => {
+      onEditTodo();
+    });
+  }
 
   const handleCheckboxChange = (todo: Todo) => {
     try {
@@ -102,16 +100,21 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
                 <td>{todo.priority}</td>
                 <td>{todo.dueDate || "N/A"}</td>
                 <td>
-                    <button
-                      className="btn btn-sm btn-primary me-2"
-                      onClick={() => {
-                        setEditTodo(todo);
-                        setIsFormVisible(true);
-                      }}
-                    >
-                    Edit
-                    </button>
-                  <button className="btn btn-sm btn-danger">Delete</button>
+                  <button
+                    className="btn btn-sm btn-primary me-2"
+                    onClick={() => {
+                      setEditTodo(todo);
+                      setIsFormVisible(true);
+                    }}
+                  >
+                  Edit
+                  </button>
+                  <button 
+                    className="btn btn-sm btn-danger"
+                    onClick={() => deleteTodo(todo.id!)}
+                  >
+                  Delete
+                  </button>
                 </td>
               </tr>
             ))}
