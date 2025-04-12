@@ -44,48 +44,56 @@ function List({ todos, setTodos, pagination }: ListProps) {
 
   return (
     <div className="container">
-      <table className="table table-striped">
-        <thead>
-        <tr>
-          <th scope="col">Status</th>
-          <th scope="col">Name</th>
-          <th scope="col">Priority</th>
-          <th scope="col">Due Date</th>
-          <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-          {todos.map((todo: Todo) => (
-            <tr key={todo.id}>
-            <td>
-              <input 
-                type="checkbox" 
-                checked={todo.completed} 
-                onChange={() => handleCheckboxChange(todo)}
-                />
-            </td>
-            <td>{todo.text}</td>
-            <td>{todo.priority}</td>
-            <td>{todo.dueDate || "N/A"}</td>
-            <td>
-              <button className="btn btn-sm btn-primary me-2">Edit</button>
-              <button className="btn btn-sm btn-danger">Delete</button>
-            </td>
+      {todos.length === 0 ? (
+        <div className="alert alert-info text-center" role="alert">
+          No results. Try a different search or consult the filter wizard. 🧙‍♂️
+        </div>
+      ) : (
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Name</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Actions</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={5}>
-              <PaginationMenu 
-                page = {pagination.page} 
-                setPage = {pagination.setPage} 
-                totalPages = {pagination.totalPages} 
-              />
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </thead>
+          <tbody>
+            {todos.map((todo: Todo) => (
+              <tr key={todo.id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => handleCheckboxChange(todo)}
+                  />
+                </td>
+                <td>{todo.text}</td>
+                <td>{todo.priority}</td>
+                <td>{todo.dueDate || "N/A"}</td>
+                <td>
+                  <button className="btn btn-sm btn-primary me-2">Edit</button>
+                  <button className="btn btn-sm btn-danger">Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          {pagination.totalPages > 1 && (
+            <tfoot>
+              <tr>
+                <td colSpan={5}>
+                  <PaginationMenu
+                    page={pagination.page}
+                    setPage={pagination.setPage}
+                    totalPages={pagination.totalPages}
+                  />
+                </td>
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      )}
     </div>
   );
 }
