@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react';
+import React from 'react';
 
 interface PaginationProps {
   page: number; // índice base 0

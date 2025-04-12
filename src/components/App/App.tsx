@@ -6,6 +6,7 @@ import List from '../List/List';
 import { Api } from '../../services/Api';
 import { Todo } from '../../interfaces/Todo';
 import { QueryParams } from '../../interfaces/QueryParams';
+import Metrics from '../Metrics/Metrics';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -14,8 +15,15 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
   // Filter
   const [filterParams, setFilterParams] = useState<QueryParams>({ text: '' });
+  // Metrics
+  const [metrics, setMetrics] = useState({
+    averageTimeDifference: '',
+    averageLowTimeDifference: '',
+    averageMediumTimeDifference: '',
+    averageHighTimeDifference: '',
+  });
 
-  const applyFilter = () => {
+  const applyFilter = React.useCallback(() => {
     const queryParams: QueryParams = {
       page: page.toString(),
       text: filterParams.text,
@@ -32,20 +40,26 @@ function App() {
     Api.get('todos', queryParams).then((response) => {
       setTodos(response.data);
       setTotalPages(response.totalPages);
+      setMetrics({
+        averageTimeDifference: response.averageTimeDifference,
+        averageLowTimeDifference: response.averageLowTimeDifference,
+        averageMediumTimeDifference: response.averageMediumTimeDifference,
+        averageHighTimeDifference: response.averageHighTimeDifference,
+      });
     });
-  };
+  }, [page, filterParams]);
 
-  // Reaplica el filtro cada vez que cambie la página
+  // Reapply the filter whenever the page changes
   useEffect(() => {
     applyFilter();
-  }, [page]);
+  }, [applyFilter]);
 
   return (
     <div>
       <Filter
         onApplyFilter={(params) => {
           setFilterParams(params);
-          setPage(0); // Reinicia a la página 0 cuando se aplica un nuevo filtro
+          setPage(0);
         }}
       />
       <CreateTodo />
@@ -53,6 +67,12 @@ function App() {
         todos={todos}
         setTodos={setTodos}
         pagination={{ page, setPage, totalPages }}
+      />
+      <Metrics 
+        averageTimeDifference={metrics.averageTimeDifference}
+        averageLowTimeDifference={metrics.averageLowTimeDifference}
+        averageMediumTimeDifference={metrics.averageMediumTimeDifference}
+        averageHighTimeDifference={metrics.averageHighTimeDifference}
       />
     </div>
   );
