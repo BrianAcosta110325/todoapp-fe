@@ -22,4 +22,8 @@ export const TodoService = {
     setAsUndone: async (id: number) => {
         return Api.put(`todos/${id}/undone`)
     },
+
+    deleteTodo: async (id: number) => {
+        return Api.delete(`todos/${id}`)
+    },
 }
