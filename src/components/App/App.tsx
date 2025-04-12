@@ -62,7 +62,11 @@ function App() {
           setPage(0);
         }}
       />
-      <CreateTodo />
+      <CreateTodo 
+        onCreateTodo={() => {
+          applyFilter();
+        }}
+      />
       <List
         todos={todos}
         setTodos={setTodos}

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Api } from '../../services/Api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function CreateTodo() {
+interface CreateTodoProps {
+  onCreateTodo: () => void;
+}
+
+function CreateTodo({ onCreateTodo }: CreateTodoProps) {
   // State to control the visibility of the form
   const [isFormVisible, setIsFormVisible] = React.useState(false);
 
@@ -20,14 +24,14 @@ function CreateTodo() {
 
   // Function to handle form submission
   const submitForm = () => {
-    // e.preventDefault();
     const newTodo = {
       text,
       priority,
       dueDate,
     };
     Api.post('todos', newTodo).then((response: any) => {
-      // console.log(response);
+      onCreateTodo();
+      setIsFormVisible(false);
     })
   }
 
@@ -102,7 +106,6 @@ function CreateTodo() {
                       className="btn btn-primary justify-content-end" 
                       onClick={() => {
                         submitForm();
-                        setIsFormVisible(false);
                       }}
                     >Create Todo</button>
                   </div>
