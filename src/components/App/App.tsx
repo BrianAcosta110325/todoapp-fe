@@ -6,6 +6,7 @@ import List from '../List/List';
 import { Api } from '../../services/Api';
 import { Todo } from '../../interfaces/Todo';
 import { QueryParams } from '../../interfaces/QueryParams';
+import Metrics from '../Metrics/Metrics';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -22,7 +23,7 @@ function App() {
     averageHighTimeDifference: '',
   });
 
-  const applyFilter = () => {
+  const applyFilter = React.useCallback(() => {
     const queryParams: QueryParams = {
       page: page.toString(),
       text: filterParams.text,
@@ -46,19 +47,19 @@ function App() {
         averageHighTimeDifference: response.averageHighTimeDifference,
       });
     });
-  };
+  }, [page, filterParams]);
 
-  // Reaplica el filtro cada vez que cambie la página
+  // Reapply the filter whenever the page changes
   useEffect(() => {
     applyFilter();
-  }, [page]);
+  }, [applyFilter]);
 
   return (
     <div>
       <Filter
         onApplyFilter={(params) => {
           setFilterParams(params);
-          setPage(0); // Reinicia a la página 0 cuando se aplica un nuevo filtro
+          setPage(0);
         }}
       />
       <CreateTodo />
@@ -66,6 +67,12 @@ function App() {
         todos={todos}
         setTodos={setTodos}
         pagination={{ page, setPage, totalPages }}
+      />
+      <Metrics 
+        averageTimeDifference={metrics.averageTimeDifference}
+        averageLowTimeDifference={metrics.averageLowTimeDifference}
+        averageMediumTimeDifference={metrics.averageMediumTimeDifference}
+        averageHighTimeDifference={metrics.averageHighTimeDifference}
       />
     </div>
   );
