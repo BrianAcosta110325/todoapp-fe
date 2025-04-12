@@ -54,12 +54,7 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
           : TodoService.setAsDone(todo.id);
 
         request.then(() => {
-          // Update the state using React hooks (if needed, add state management logic here)
-          setTodos(
-            todos.map((t) =>
-              t.id === todo.id ? { ...t, completed: !t.completed } : t
-            )
-          );
+          onEditTodo();
         });
       } else {
         throw new Error("Todo ID is undefined");
