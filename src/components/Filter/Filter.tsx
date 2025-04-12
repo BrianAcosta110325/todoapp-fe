@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
-import { Api } from '../../services/Api';
 import { QueryParams } from '../../interfaces/QueryParams';
-import { Todo } from '../../interfaces/Todo';
 
 interface FilterProps {
-  onApplyFilter: (filteredData: Todo[]) => void;
+  onApplyFilter: (filterData: QueryParams) => void;
 }
 
 interface CheckboxOption {
@@ -38,24 +36,16 @@ function Filter({ onApplyFilter }: FilterProps) {
 
   const applyFilter = () => {
     const completed = status[0].checked === status[1].checked ? null : status[0].checked;
-    const prioritiesChecked: string[] = priorities.filter(option => option.checked === true).map(option => option.id);
+    const prioritiesChecked: string[] = priorities.filter(option => option.checked).map(option => option.id);
 
     const queryParams: QueryParams = {
-      page: '0',
       text: searchText,
     };
 
-    if (completed != null) {
-      queryParams['completed'] = completed.toString();
-    }
+    if (completed != null) queryParams.completed = completed.toString();
+    if (prioritiesChecked.length > 0) queryParams.priorities = prioritiesChecked.join(',');
 
-    if(prioritiesChecked.length > 0) {
-      queryParams['priorities'] = prioritiesChecked.join(',');
-    }
-
-    Api.get('todos', queryParams).then((response) => {
-      onApplyFilter(response);
-    })
+    onApplyFilter(queryParams);
   };
 
   return (

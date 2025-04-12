@@ -1,5 +1,5 @@
 export interface QueryParams {
-  page: string;
+  page?: string;
   text: string;
   completed?: string;
   priorities?: string;

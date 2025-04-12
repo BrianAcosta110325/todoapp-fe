@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Api } from "../../services/Api";
 import { Todo } from "../../interfaces/Todo";
+import PaginationMenu from "./Pagination/PaginationMenu";
+
+interface PaginationProps {
+  page: number;
+  setPage: (page: number) => void;
+  totalPages: number;
+}
 
 interface ListProps {
   todos: Todo[];
   setTodos: (todo: Todo[]) => void;
+  pagination: PaginationProps;
 }
 
-function List({ todos, setTodos }: ListProps) {
+
+function List({ todos, setTodos, pagination }: ListProps) {
   // const [loading, setLoading] = useState(true);
   // const [page, setPage] = useState(0);
 
@@ -65,6 +74,17 @@ function List({ todos, setTodos }: ListProps) {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={5}>
+              <PaginationMenu 
+                page = {pagination.page} 
+                setPage = {pagination.setPage} 
+                totalPages = {pagination.totalPages} 
+              />
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
