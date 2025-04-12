@@ -13,17 +13,16 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
   const [isFormVisible, setIsFormVisible] = React.useState(false);
 
   // Input data
-  const [text, setText] = useState("");
-  const [priority, setPriority] = useState("High");
-  const [dueDate, setDueDate] = useState("");
+  const [newTodo, setNewTodo] = useState<Todo>({
+    id: -1,
+    text: "",
+    priority: "High",
+    dueDate: "",
+    completed: false,
+  });
 
   // Function to handle form submission
   const submitForm = () => {
-    const newTodo: Todo = {
-      text,
-      priority,
-      dueDate,
-    };
     TodoService.addTodo(newTodo).then((response: any) => {
       onCreateTodo();
       setIsFormVisible(false);
@@ -32,9 +31,13 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
 
   useEffect(() => {
     if (!isFormVisible) {
-      setText("");
-      setPriority("High");
-      setDueDate("");
+      setNewTodo({
+        id: -1,
+        text: "",
+        priority: "High",
+        dueDate: "",
+        completed: false,
+      });
     }
   }, [isFormVisible]);
 
@@ -49,12 +52,8 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
 
       {isFormVisible && 
       <TodoForm 
-        text={text} 
-        setText={setText} 
-        priority={priority} 
-        setPriority={setPriority} 
-        dueDate={dueDate} 
-        setDueDate={setDueDate} 
+        todo={newTodo}
+        setTodo={setNewTodo}
         title='Create Todo'
         submitForm={submitForm} 
         setIsFormVisible={setIsFormVisible}

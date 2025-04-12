@@ -134,12 +134,8 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
 
       {isFormVisible && (
       <CreateEditTodoForm 
-        text={editTodo.text}
-        setText={(text) => setEditTodo({ ...editTodo, text })}
-        priority={editTodo.priority}
-        setPriority={(priority) => setEditTodo({ ...editTodo, priority })}
-        dueDate={editTodo.dueDate}
-        setDueDate={(dueDate) => setEditTodo({ ...editTodo, dueDate })}
+        todo={editTodo}
+        setTodo={setEditTodo}
         submitForm={submitForm}
         setIsFormVisible={setIsFormVisible}
         title="Edit Todo"

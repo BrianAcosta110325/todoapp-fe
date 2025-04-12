@@ -1,17 +1,14 @@
+import { Todo } from "../interfaces/Todo";
 
 interface TodoFormProps {
   setIsFormVisible: (isVisible: boolean) => void;
-  text: string;
-  setText: (text: string) => void;
-  priority: string;
-  setPriority: (priority: string) => void;
-  dueDate: string;
-  setDueDate: (dueDate: string) => void;
+  todo: Todo;
+  setTodo: (todo: Todo) => void;
   title: string;
   submitForm: () => void;
 }
 
-function TodoForm({ setIsFormVisible, text, setText, priority, setPriority, dueDate, setDueDate, title, submitForm }: TodoFormProps) {
+function TodoForm({ setIsFormVisible, todo, setTodo, title, submitForm }: TodoFormProps) {
   // Data for priorities
   const priorities = [
     "High",
@@ -36,8 +33,8 @@ function TodoForm({ setIsFormVisible, text, setText, priority, setPriority, dueD
                   type="text"
                   id="text"
                   className="form-control flex-grow-1"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  value={todo.text}
+                  onChange={(e) => setTodo({ ...todo, text: e.target.value })}
                 />
               </div>
 
@@ -46,8 +43,8 @@ function TodoForm({ setIsFormVisible, text, setText, priority, setPriority, dueD
                 <label htmlFor="priority" className="form-label me-2 mb-0" style={{ width: '100px' }}>Priority</label>
                 <select
                 className="form-select"
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
+                value={todo.priority}
+                onChange={(e) => setTodo({ ...todo, priority: e.target.value })}
                 >
                   {priorities.map((p) => (
                     <option key={p} value={p}>
@@ -63,8 +60,8 @@ function TodoForm({ setIsFormVisible, text, setText, priority, setPriority, dueD
                   type="date"
                   id="dueDate"
                   className="form-control flex-grow-1"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
+                  value={todo.dueDate}
+                  onChange={(e) => setTodo({ ...todo, dueDate: e.target.value })}
                 />
               </div>
               <div className="d-flex justify-content-end">
