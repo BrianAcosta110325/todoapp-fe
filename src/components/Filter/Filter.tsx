@@ -1,9 +1,20 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
-import { Api } from '../../services/Api';
+import { QueryParams } from '../../interfaces/QueryParams';
 
-function Filter() {
+interface FilterProps {
+  onApplyFilter: (filterData: QueryParams) => void;
+}
+
+interface CheckboxOption {
+  id: string;
+  checked: boolean;
+}
+
+function Filter({ onApplyFilter }: FilterProps) {
+  const [searchText, setSearchText] = useState("");
+
   const [priorities, setPriorities] = useState([
     { id: 'High', checked: false },
     { id: 'Medium', checked: false },
@@ -15,37 +26,26 @@ function Filter() {
     { id: 'Undone', checked: false },
   ]);
 
-  const [searchText, setSearchText] = useState("");
-
-  const updatePriorities = (updatedPriorities: { id: string; checked: boolean }[]) => {
+  const updatePriorities = (updatedPriorities: CheckboxOption[]) => {
     setPriorities(updatedPriorities);
   };
 
-  const updateStatus = (updatedStatus: { id: string; checked: boolean }[]) => {
+  const updateStatus = (updatedStatus: CheckboxOption[]) => {
     setStatus(updatedStatus);
   };
 
   const applyFilter = () => {
     const completed = status[0].checked === status[1].checked ? null : status[0].checked;
-    const prioritiesChecked: string[] = priorities.filter(option => option.checked === true).map(option => option.id);
+    const prioritiesChecked: string[] = priorities.filter(option => option.checked).map(option => option.id);
 
-    const queryParams = new URLSearchParams({
-      page: '0',
+    const queryParams: QueryParams = {
       text: searchText,
-    });
+    };
 
-    if (completed != null) {
-      queryParams.append('completed', completed.toString());
-    }
+    if (completed != null) queryParams.completed = completed.toString();
+    if (prioritiesChecked.length > 0) queryParams.priorities = prioritiesChecked.join(',');
 
-    if(prioritiesChecked.length > 0) {
-      queryParams.append('priorities', prioritiesChecked.join(','));
-    }
-
-    Api.get('todos', queryParams.toString()).then((response) => {
-      console.log(response);
-      // Aquí puedes manejar la respuesta de la API
-    })
+    onApplyFilter(queryParams);
   };
 
   return (
