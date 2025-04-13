@@ -37,6 +37,13 @@ function App() {
       queryParams.priorities = filterParams.priorities;
     }
 
+    if (filterParams.prioritySort !== "") {
+      queryParams.prioritySort = filterParams.prioritySort;
+    }
+    if (filterParams.dueDateSort !== "") {
+      queryParams.dueDateSort = filterParams.dueDateSort;
+    }
+
     TodoService.getTodos(queryParams).then((response) => {
       setTodos(response.data);
       setTotalPages(response.totalPages);
@@ -72,8 +79,14 @@ function App() {
           applyFilter();
         }}
         todos={todos}
-        setTodos={setTodos}
         pagination={{ page, setPage, totalPages }}
+        onApplySort={(params) => {
+          setFilterParams((prev) => ({
+            ...prev,
+            prioritySort: params.get('priority'),
+            dueDateSort: params.get('dueDate'),
+          }));
+        }}
       />
       <Metrics 
         averageTimeDifference={metrics.averageTimeDifference}

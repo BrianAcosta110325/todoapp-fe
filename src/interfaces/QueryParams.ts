@@ -1,6 +1,8 @@
 export interface QueryParams {
-  page?: string;
-  text: string;
-  completed?: string;
-  priorities?: string;
+  page?: String;
+  text: String;
+  completed?: String;
+  priorities?: String;
+  dueDateSort?: String;
+  prioritySort?: String;
 }
