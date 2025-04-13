@@ -58,7 +58,7 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
   const deleteTodo = (id: number) => {
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: "You won’t be able to revert this... unless you have a time machine.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
