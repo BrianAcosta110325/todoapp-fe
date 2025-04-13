@@ -20,6 +20,7 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
     priority: "High",
     dueDate: "",
     completed: false,
+    dueDateProximity: 0,
   });
 
   // Function to handle form submission
@@ -50,6 +51,7 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
         priority: "High",
         dueDate: "",
         completed: false,
+        dueDateProximity: 0,
       });
     }
   }, [isFormVisible]);

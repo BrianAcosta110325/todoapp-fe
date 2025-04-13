@@ -34,6 +34,7 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
     priority: "High",
     dueDate: "",
     completed: false,
+    dueDateProximity: 0,
   });
 
   // Function to handle edit form
@@ -122,6 +123,19 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
     onApplySort(sortMap);
   };
 
+  const getDueDateClass = (proximity: number) => {
+    switch (proximity) {
+      case 1:
+        return 'table-danger';   // Urgente (rojo)
+      case 2:
+        return 'table-warning';  // Moderado (amarillo)
+      case 3:
+        return 'table-success';  // Tranquilo (verde)
+      default:
+        return '';               // Sin dueDate o sin color
+    }
+  };  
+
   return (
     <div className="container">
       {todos.length === 0 ? (
@@ -145,7 +159,7 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
           </thead>
           <tbody>
             {todos.map((todo: Todo) => (
-              <tr key={todo.id}>
+              <tr key={todo.id} className={getDueDateClass(todo.dueDateProximity)}>
                 <td>
                   <input
                     type="checkbox"
@@ -153,9 +167,11 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
                     onChange={() => handleCheckboxChange(todo)}
                   />
                 </td>
-                <td>{todo.text}</td>
+                <td style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                  {todo.text}
+                </td>
                 <th>{todo.priority}</th>
-                <td>{todo.dueDate}</td>
+                <td>{todo.dueDate ? todo.dueDate : "No Due date"}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-primary me-2"
