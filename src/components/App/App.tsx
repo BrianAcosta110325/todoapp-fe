@@ -65,7 +65,12 @@ function App() {
     <div>
       <Filter
         onApplyFilter={(params) => {
-          setFilterParams(params);
+          setFilterParams((prev) => ({
+            ...prev,
+            text: params.text,
+            completed: params.completed,
+            priorities: params.priorities,
+          }));
           setPage(0);
         }}
       />
