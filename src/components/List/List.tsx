@@ -49,8 +49,8 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
     }).catch((error: any) => {
       Swal.fire({
         icon: 'error',
-        title: 'Error updating Todo',
-        text: error.message,
+        title: 'Failed to update Todo',
+        text: 'Please verify your text input and try again.',
       });
     });
   }

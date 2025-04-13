@@ -18,8 +18,16 @@ export const Api = {
       headers: { 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined,
     });
-    return response.json();
-  },
+  
+    const data = await response.json();
+  
+    if (!response.ok) {
+      // Lanza un error con el mensaje que devuelve el backend o uno genérico
+      throw new Error(data.message || 'Something went wrong');
+    }
+  
+    return data;
+  },  
 
   put: async (path: string, body?: any) => {
     const response = await fetch(`${API_URL}/${path}`, {
@@ -27,7 +35,14 @@ export const Api = {
       headers: { 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined,
     });
-    return response.json();
+
+    const data = await response.json();
+    if (!response.ok) {
+      // Lanza un error con el mensaje que devuelve el backend o uno genérico
+      throw new Error(data.message || 'Something went wrong');
+    }
+    
+    return data;
   },
 
   delete: async (path: string) => {

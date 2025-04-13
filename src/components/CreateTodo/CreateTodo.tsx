@@ -37,7 +37,7 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'There was an issue creating your todo. Please try again.',
+        text: 'Please verify your text input and try again.',
       });
     });
   }
