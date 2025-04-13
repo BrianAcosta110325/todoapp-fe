@@ -30,7 +30,8 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
         icon: 'success',
         title: 'Todo Created',
         text: 'Your new todo has been successfully created!',
-        confirmButtonText: 'OK',
+        showConfirmButton: false,
+        timer: 2000
       }).then((result) => {
         onCreateTodo();
       });

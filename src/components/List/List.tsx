@@ -4,6 +4,7 @@ import { Todo } from "../../interfaces/Todo";
 import PaginationMenu from "./Pagination/PaginationMenu";
 import { TodoService } from "../../services/TodoService";
 import CreateEditTodoForm from "../../Utils/CreateEditTodoForm";
+import Swal from 'sweetalert2';
 
 interface PaginationProps {
   page: number;
@@ -35,12 +36,25 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
     completed: false,
   });
 
-  // Function to handle form submission
+  // Function to handle edit form
   const submitForm = () => {
     TodoService.updateTodo(editTodo).then((response: any) => {
-      onEditTodo();
       setIsFormVisible(false);
-    })
+      Swal.fire({
+        icon: 'success',
+        title: 'Todo updated successfully!',
+        showConfirmButton: false,
+        timer: 2000
+      }).then(() => {
+        onEditTodo();
+      });
+    }).catch((error: any) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error updating Todo',
+        text: error.message,
+      });
+    });
   }
 
   const deleteTodo = (id: number) => {
@@ -79,8 +93,6 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
       setDueDateSort(newDueDateSort);
     }
   
-    // 🔁 Ejecutar onApplySort *después* de cambiar los estados locales
-    // pero no dentro del `setState` callback
     const sortMap = new Map<String, String>([
       ['priority', newPrioritySort],
       ['dueDate', newDueDateSort],
