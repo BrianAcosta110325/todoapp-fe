@@ -153,7 +153,9 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
                     onChange={() => handleCheckboxChange(todo)}
                   />
                 </td>
-                <td>{todo.text}</td>
+                <td style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                  {todo.text}
+                </td>
                 <th>{todo.priority}</th>
                 <td>{todo.dueDate}</td>
                 <td>
