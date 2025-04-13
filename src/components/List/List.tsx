@@ -157,7 +157,7 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
                   {todo.text}
                 </td>
                 <th>{todo.priority}</th>
-                <td>{todo.dueDate}</td>
+                <td>{todo.dueDate ? todo.dueDate : "No Due date"}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-primary me-2"
