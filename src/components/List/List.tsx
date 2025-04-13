@@ -43,8 +43,6 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
       Swal.fire({
         icon: 'success',
         title: 'Todo updated successfully!',
-        showConfirmButton: false,
-        timer: 2000
       }).then(() => {
         onEditTodo();
       });
@@ -58,8 +56,31 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
   }
 
   const deleteTodo = (id: number) => {
-    TodoService.deleteTodo(id).then(() => {
-      onEditTodo();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        TodoService.deleteTodo(id).then(() => {
+          Swal.fire(
+            'Deleted!',
+            'Your todo has been deleted.',
+            'success'
+          );
+          onEditTodo();
+        }).catch((error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error deleting Todo',
+            text: error.message,
+          });
+        });
+      }
     });
   }
 
