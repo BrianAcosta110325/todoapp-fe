@@ -14,14 +14,17 @@ interface PaginationProps {
 interface ListProps {
   onEditTodo: () => void;
   todos: Todo[];
-  setTodos: (todo: Todo[]) => void;
   pagination: PaginationProps;
+  onApplySort: (sortField: Map<String,String>) => void;
 }
 
 
-function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
+function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
   // State to control the visibility of the form
   const [isFormVisible, setIsFormVisible] = React.useState(false);
+  // Sort data
+  const [dueDateSort, setDueDateSort] = useState<String>("");
+  const [prioritySort, setPrioritySort] = useState<String>("");
 
   // Input data
   const [editTodo, setEditTodo] = useState<Todo>({
@@ -64,6 +67,28 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
     }  
   }
 
+  const handleSort = (field: string) => {
+    let newPrioritySort = prioritySort;
+    let newDueDateSort = dueDateSort;
+  
+    if (field === "priority") {
+      newPrioritySort = prioritySort === "asc" ? "desc" : "asc";
+      setPrioritySort(newPrioritySort);
+    } else if (field === "dueDate") {
+      newDueDateSort = dueDateSort === "asc" ? "desc" : "asc";
+      setDueDateSort(newDueDateSort);
+    }
+  
+    // 🔁 Ejecutar onApplySort *después* de cambiar los estados locales
+    // pero no dentro del `setState` callback
+    const sortMap = new Map<String, String>([
+      ['priority', newPrioritySort],
+      ['dueDate', newDueDateSort],
+    ]);
+  
+    onApplySort(sortMap);
+  };
+
   return (
     <div className="container">
       {todos.length === 0 ? (
@@ -76,8 +101,12 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
             <tr>
               <th scope="col">Status</th>
               <th scope="col">Name</th>
-              <th scope="col">Priority</th>
-              <th scope="col">Due Date</th>
+              <th scope="col" style={{ cursor: 'pointer' }} onClick={() => handleSort('priority')}>
+                Priority {prioritySort === "asc" ? '↓' : prioritySort === "desc" ? '↑' : ''}
+              </th>
+              <th scope="col" style={{ cursor: 'pointer' }} onClick={() => handleSort('dueDate')}>
+                Due Date {dueDateSort === "asc" ? '↓' : dueDateSort === "desc" ? '↑' : ''}
+              </th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -92,8 +121,8 @@ function List({ onEditTodo, todos, setTodos, pagination }: ListProps) {
                   />
                 </td>
                 <td>{todo.text}</td>
-                <td>{todo.priority}</td>
-                <td>{todo.dueDate || "N/A"}</td>
+                <th>{todo.priority}</th>
+                <td>{todo.dueDate}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-primary me-2"
