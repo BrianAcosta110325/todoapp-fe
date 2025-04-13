@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import TodoForm from '../../Utils/CreateEditTodoForm';
 import { TodoService } from '../../services/TodoService';
 import { Todo } from '../../interfaces/Todo';
+import Swal from 'sweetalert2';
 
 interface CreateTodoProps {
   onCreateTodo: () => void;
@@ -24,9 +25,21 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
   // Function to handle form submission
   const submitForm = () => {
     TodoService.addTodo(newTodo).then((response: any) => {
-      onCreateTodo();
       setIsFormVisible(false);
-    })
+      Swal.fire({
+        icon: 'success',
+        title: 'Todo Created',
+        text: 'Your new todo has been successfully created!',
+      }).then((result) => {
+        onCreateTodo();
+      });
+    }).catch((error: any) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please verify your text input and try again.',
+      });
+    });
   }
 
   useEffect(() => {

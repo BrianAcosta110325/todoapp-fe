@@ -66,7 +66,7 @@ function TodoForm({ setIsFormVisible, todo, setTodo, title, submitForm }: TodoFo
               </div>
               <div className="d-flex justify-content-end">
                 <button 
-                  type="submit" 
+                  type="button"
                   className="btn btn-primary justify-content-end" 
                   onClick={() => {
                     submitForm();

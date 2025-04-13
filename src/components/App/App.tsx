@@ -7,14 +7,17 @@ import { Todo } from '../../interfaces/Todo';
 import { QueryParams } from '../../interfaces/QueryParams';
 import Metrics from '../Metrics/Metrics';
 import { TodoService } from '../../services/TodoService';
+import LoadingScreen from '../../Utils/LoadingScreen';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   // Pagination
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+
   // Filter
   const [filterParams, setFilterParams] = useState<QueryParams>({ text: '' });
+
   // Metrics
   const [metrics, setMetrics] = useState({
     averageTimeDifference: '',
@@ -23,27 +26,33 @@ function App() {
     averageHighTimeDifference: '',
   });
 
+  // Loading state
+  const [loading, setLoading] = useState(true);
+
   const applyFilter = React.useCallback(() => {
+    setLoading(true);
+  
     const queryParams: QueryParams = {
       page: page.toString(),
       text: filterParams.text,
     };
-
+  
     if (filterParams.completed) {
       queryParams.completed = filterParams.completed;
     }
-
+  
     if (filterParams.priorities) {
       queryParams.priorities = filterParams.priorities;
     }
-
+  
     if (filterParams.prioritySort !== "") {
       queryParams.prioritySort = filterParams.prioritySort;
     }
+  
     if (filterParams.dueDateSort !== "") {
       queryParams.dueDateSort = filterParams.dueDateSort;
     }
-
+  
     TodoService.getTodos(queryParams).then((response) => {
       setTodos(response.data);
       setTotalPages(response.totalPages);
@@ -53,8 +62,12 @@ function App() {
         averageMediumTimeDifference: response.averageMediumTimeDifference,
         averageHighTimeDifference: response.averageHighTimeDifference,
       });
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 200);
     });
-  }, [page, filterParams]);
+  }, [page, filterParams]);  
 
   // Reapply the filter whenever the page changes
   useEffect(() => {
@@ -99,6 +112,7 @@ function App() {
         averageMediumTimeDifference={metrics.averageMediumTimeDifference}
         averageHighTimeDifference={metrics.averageHighTimeDifference}
       />
+      <LoadingScreen loading={loading} />
     </div>
   );
 }

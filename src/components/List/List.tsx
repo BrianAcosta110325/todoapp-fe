@@ -4,6 +4,7 @@ import { Todo } from "../../interfaces/Todo";
 import PaginationMenu from "./Pagination/PaginationMenu";
 import { TodoService } from "../../services/TodoService";
 import CreateEditTodoForm from "../../Utils/CreateEditTodoForm";
+import Swal from 'sweetalert2';
 
 interface PaginationProps {
   page: number;
@@ -35,17 +36,51 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
     completed: false,
   });
 
-  // Function to handle form submission
+  // Function to handle edit form
   const submitForm = () => {
     TodoService.updateTodo(editTodo).then((response: any) => {
-      onEditTodo();
       setIsFormVisible(false);
-    })
+      Swal.fire({
+        icon: 'success',
+        title: 'Todo updated successfully!',
+      }).then(() => {
+        onEditTodo();
+      });
+    }).catch((error: any) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed to update Todo',
+        text: 'Please verify your text input and try again.',
+      });
+    });
   }
 
   const deleteTodo = (id: number) => {
-    TodoService.deleteTodo(id).then(() => {
-      onEditTodo();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won’t be able to revert this... unless you have a time machine.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        TodoService.deleteTodo(id).then(() => {
+          Swal.fire(
+            'Deleted!',
+            'Your todo has been deleted.',
+            'success'
+          );
+          onEditTodo();
+        }).catch((error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error deleting Todo',
+            text: error.message,
+          });
+        });
+      }
     });
   }
 
@@ -79,8 +114,6 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
       setDueDateSort(newDueDateSort);
     }
   
-    // 🔁 Ejecutar onApplySort *después* de cambiar los estados locales
-    // pero no dentro del `setState` callback
     const sortMap = new Map<String, String>([
       ['priority', newPrioritySort],
       ['dueDate', newDueDateSort],
