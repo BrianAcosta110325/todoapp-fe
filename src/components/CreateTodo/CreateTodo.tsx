@@ -15,7 +15,6 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
 
   // Input data
   const [newTodo, setNewTodo] = useState<Todo>({
-    id: -1,
     text: "",
     priority: "High",
     dueDate: "",
@@ -46,7 +45,6 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
   useEffect(() => {
     if (!isFormVisible) {
       setNewTodo({
-        id: -1,
         text: "",
         priority: "High",
         dueDate: "",
