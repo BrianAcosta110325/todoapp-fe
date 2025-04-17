@@ -1,46 +1,71 @@
-# Getting Started with Create React App
+# React Todo App (or your project name)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple React app built with TypeScript. It includes custom components like a loading screen and others to manage tasks. It's a good starting point to experiment with state management, hooks, and writing tests in React.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app in development mode.  
+Open [http://localhost:8080](http://localhost:8080) to check it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The page reloads automatically when you save changes.  
+You’ll also see lint errors directly in the console.
 
-### `npm test`
+### `npm run test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.  
+Useful to make sure everything works while developing.
 
-### `npm run build`
+## Components Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `App`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Main component that combines and structures all the smaller components.  
+It also handles the initialization of variables and sets up the basic layout.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### `Filter`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Allows filtering Todos by:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Text
+- Priority
+- Completed status
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The filter sends query parameters to the backend API to get the filtered results.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
+### `CreateTodo`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Displays a form to create a new Todo.  
+It collects the input data and sends it as JSON to the backend via the API so the Todo can be added.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+### `Metrics`
+
+Shows stats about Todos, including:
+
+- General average time to complete a Todo
+- Priority-based average completion time
+
+All data is provided by the backend.
+
+---
+
+### `List`
+
+Displays all the Todos returned from the backend.  
+Includes a bunch of features to interact with the list:
+
+- **Edit**: Update an existing Todo (uses the same logic as creation)
+- **Pagination**: Navigate through multiple pages of Todos
+- **Mark as Done/Undone**: Toggle the completed status
+- **Sorting**: Order by priority or due date
+- **Delete**: Remove a Todo
+- **Due Date Color Coding**: Each Todo is styled based on how close the due date is, according to the backend
