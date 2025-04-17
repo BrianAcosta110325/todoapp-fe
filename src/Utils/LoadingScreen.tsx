@@ -7,7 +7,7 @@ interface LoadingScreenProps {
 function LoadingScreen({ loading }: LoadingScreenProps) {
     if (loading) {
         return (
-            <div style={styles.overlay}>
+            <div data-testid="loading-screen" style={styles.overlay}>
                 <div style={styles.loader}>
                     <span role="img" aria-label="loading" style={styles.icon}>
                         🦜
