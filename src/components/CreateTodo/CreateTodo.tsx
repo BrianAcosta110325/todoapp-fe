@@ -26,12 +26,13 @@ function CreateTodo({ onCreateTodo }: CreateTodoProps) {
   const submitForm = () => {
     TodoService.addTodo(newTodo).then((response: any) => {
       setIsFormVisible(false);
+      onCreateTodo();
       Swal.fire({
         icon: 'success',
         title: 'Todo Created',
         text: 'Your new todo has been successfully created!',
-      }).then((result) => {
-        onCreateTodo();
+        timer: 1500,
+        showConfirmButton: false,
       });
     }).catch((error: any) => {
       Swal.fire({

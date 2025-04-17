@@ -42,6 +42,7 @@ function TodoForm({ setIsFormVisible, todo, setTodo, title, submitForm }: TodoFo
               <div className="d-flex align-items-center mb-3">
                 <label htmlFor="priority" className="form-label me-2 mb-0" style={{ width: '100px' }}>Priority</label>
                 <select
+                id="priority"
                 className="form-select"
                 value={todo.priority}
                 onChange={(e) => setTodo({ ...todo, priority: e.target.value })}
