@@ -1,6 +1,27 @@
-# Breakable Toy I - Todo App
+# Breakable Toy I - Todo App front-end
 
-This is a simple React app built with TypeScript. It includes custom components like a loading screen and others to manage tasks. It's a good starting point to experiment with state management, hooks, and writing tests in React.
+This is the front-end of the Todo application, developed with **React** and **TypeScript** as part of an activity. It includes custom components for task management, filtering, and displaying metrics.
+
+## Prerequisites
+
+Before running the project, ensure you have the following installed:
+
+- **Node.js** (version 16 or higher)
+- **npm** (Node Package Manager)
+
+Additionally, make sure to install the project dependencies by running:
+
+```bash
+npm install
+```
+
+## Features
+
+- **Task Management**: Create, edit, delete, and mark tasks as completed or not completed.
+- **Filtering**: Filter tasks by text, priority, or completion status.
+- **Metrics**: View statistics like average completion time, broken down by priority.
+- **Pagination and Sorting**: Navigate through tasks and sort them by priority or due date.
+- **Dynamic Styling**: Tasks are styled based on their due date proximity.
 
 ## Available Scripts
 
@@ -8,64 +29,63 @@ In the project directory, you can run:
 
 ### `npm run start`
 
-Runs the app in development mode.  
-Open [http://localhost:8080](http://localhost:8080) to check it in the browser.
+Starts the app in development mode.  
+Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 
-The page reloads automatically when you save changes.  
-You’ll also see lint errors directly in the console.
+The app reloads automatically when you save changes, and lint errors are displayed in the console.
 
 ### `npm run test`
 
-Launches the test runner in interactive watch mode.  
-Useful to make sure everything works while developing.
+Runs the test suite in interactive watch mode.  
+This is useful for ensuring the app works as expected during development.
 
 ## Components Overview
 
 ### `App`
 
-Main component that combines and structures all the smaller components.  
-It also handles the initialization of variables and sets up the basic layout.
+The main component that initializes the app and combines all other components.  
+It sets up the layout and handles global state where necessary.
 
 ---
 
 ### `Filter`
 
-Allows filtering Todos by:
+A component for filtering tasks based on:
 
 - Text
 - Priority
-- Completed status
+- Completion status
 
-The filter sends query parameters to the backend API to get the filtered results.
+It sends query parameters to the backend API to fetch filtered results.
 
 ---
 
 ### `CreateTodo`
 
-Displays a form to create a new Todo.  
-It collects the input data and sends it as JSON to the backend via the API so the Todo can be added.
+A form component for creating new tasks.  
+It collects user input and sends it as JSON to the backend API to add a new task.
 
 ---
 
 ### `Metrics`
 
-Shows stats about Todos, including:
+Displays statistics about tasks, including:
 
-- General average time to complete a Todo
+- Average time to complete a task
 - Priority-based average completion time
 
-All data is provided by the backend.
+All data is fetched from the backend.
 
 ---
 
 ### `List`
 
-Displays all the Todos returned from the backend.  
-Includes a bunch of features to interact with the list:
+Displays the list of tasks fetched from the backend.  
+It includes several interactive features:
 
-- **Edit**: Update an existing Todo (uses the same logic as creation)
-- **Pagination**: Navigate through multiple pages of Todos
-- **Mark as Done/Undone**: Toggle the completed status
-- **Sorting**: Order by priority or due date
-- **Delete**: Remove a Todo
-- **Due Date Color Coding**: Each Todo is styled based on how close the due date is, according to the backend
+- **Edit**: Update an existing task using the same form as task creation.
+- **Pagination**: Navigate through multiple pages of tasks.
+- **Mark as Done/Undone**: Toggle the completion status of a task.
+- **Sorting**: Order tasks by priority or due date.
+- **Delete**: Remove a task from the list.
+- **Due Date Color Coding**: Tasks are styled based on how close their due date is.
