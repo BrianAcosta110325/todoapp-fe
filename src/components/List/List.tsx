@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Todo } from "../../interfaces/Todo";
-import PaginationMenu from "./Pagination/PaginationMenu";
+import PaginationMenu from "./PaginationMenu";
 import { TodoService } from "../../services/TodoService";
 import CreateEditTodoForm from "../../Utils/CreateEditTodoForm";
 import Swal from 'sweetalert2';
@@ -41,11 +41,13 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
   const submitForm = () => {
     TodoService.updateTodo(editTodo).then((response: any) => {
       setIsFormVisible(false);
+      onEditTodo();
       Swal.fire({
         icon: 'success',
         title: 'Todo updated successfully!',
-      }).then(() => {
-        onEditTodo();
+        text: 'Your todo has been updated successfully!',
+        timer: 1500,
+        showConfirmButton: false,
       });
     }).catch((error: any) => {
       Swal.fire({
