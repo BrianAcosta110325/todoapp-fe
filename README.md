@@ -1,4 +1,4 @@
-# React Todo App (or your project name)
+# Breakable Toy I - Todo App
 
 This is a simple React app built with TypeScript. It includes custom components like a loading screen and others to manage tasks. It's a good starting point to experiment with state management, hooks, and writing tests in React.
 
