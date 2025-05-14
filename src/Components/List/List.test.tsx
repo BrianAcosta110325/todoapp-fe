@@ -6,7 +6,7 @@ import { TodoService } from "../../Services/TodoService";
 import Swal from 'sweetalert2';
 
 // Mocks
-jest.mock("../../services/TodoService");
+jest.mock("../../Services/TodoService");
 jest.mock('sweetalert2', () => ({
   fire: jest.fn(() => Promise.resolve({ isConfirmed: true }))
 }));

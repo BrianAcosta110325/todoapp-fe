@@ -4,7 +4,7 @@ import CreateTodo from './CreateTodo';
 import { TodoService } from '../../Services/TodoService';
 import Swal from 'sweetalert2';
 
-jest.mock('../../services/TodoService');
+jest.mock('../../Services/TodoService');
 jest.mock('sweetalert2');
 
 describe('CreateTodo', () => {
