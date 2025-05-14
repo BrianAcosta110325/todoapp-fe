@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Todo } from "../../interfaces/Todo";
+import { Todo } from "../../Interfaces/Todo";
 import PaginationMenu from "./PaginationMenu";
-import { TodoService } from "../../services/TodoService";
+import { TodoService } from "../../Services/TodoService";
 import CreateEditTodoForm from "../../Utils/CreateEditTodoForm";
 import Swal from 'sweetalert2';
 

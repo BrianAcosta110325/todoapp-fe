@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
-import { TodoService } from '../../services/TodoService';
+import { TodoService } from '../../Services/TodoService';
 
 jest.mock('../../services/TodoService');
 const mockedTodoService = TodoService as jest.Mocked<typeof TodoService>;

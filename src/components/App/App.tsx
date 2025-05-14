@@ -3,10 +3,10 @@ import Filter from '../Filter/Filter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateTodo from '../CreateTodo/CreateTodo';
 import List from '../List/List';
-import { Todo } from '../../interfaces/Todo';
-import { QueryParams } from '../../interfaces/QueryParams';
+import { Todo } from '../../Interfaces/Todo';
+import { QueryParams } from '../../Interfaces/QueryParams';
 import Metrics from '../Metrics/Metrics';
-import { TodoService } from '../../services/TodoService';
+import { TodoService } from '../../Services/TodoService';
 import LoadingScreen from '../../Utils/LoadingScreen';
 
 function App() {

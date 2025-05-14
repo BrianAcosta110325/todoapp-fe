@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Filter from './Filter';
-import { QueryParams } from '../../interfaces/QueryParams';
+import { QueryParams } from '../../Interfaces/QueryParams';
 
 jest.mock('./ChekboxDropdown', () => (props: any) => {
   const { options, updateOptions } = props;

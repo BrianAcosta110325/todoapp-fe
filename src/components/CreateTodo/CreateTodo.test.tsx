@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CreateTodo from './CreateTodo';
-import { TodoService } from '../../services/TodoService';
+import { TodoService } from '../../Services/TodoService';
 import Swal from 'sweetalert2';
 
 jest.mock('../../services/TodoService');

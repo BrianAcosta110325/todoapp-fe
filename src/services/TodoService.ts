@@ -1,5 +1,5 @@
-import { QueryParams } from "../interfaces/QueryParams"
-import { Todo } from "../interfaces/Todo"
+import { QueryParams } from "../Interfaces/QueryParams"
+import { Todo } from "../Interfaces/Todo"
 import { Api } from "./Api"
 
 export const TodoService = {

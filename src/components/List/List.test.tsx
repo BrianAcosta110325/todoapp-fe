@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import List from "./List";
-import { Todo } from "../../interfaces/Todo";
-import { TodoService } from "../../services/TodoService";
+import { Todo } from "../../Interfaces/Todo";
+import { TodoService } from "../../Services/TodoService";
 import Swal from 'sweetalert2';
 
 // Mocks

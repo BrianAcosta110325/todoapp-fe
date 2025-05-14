@@ -1,4 +1,4 @@
-import { QueryParams } from "../interfaces/QueryParams";
+import { QueryParams } from "../Interfaces/QueryParams";
 
 const API_URL = "http://localhost:9090/api"
 

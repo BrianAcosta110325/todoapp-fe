@@ -1,4 +1,4 @@
-import { Todo } from "../interfaces/Todo";
+import { Todo } from "../Interfaces/Todo";
 
 interface TodoFormProps {
   setIsFormVisible: (isVisible: boolean) => void;

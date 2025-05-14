@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TodoForm from '../../Utils/CreateEditTodoForm';
-import { TodoService } from '../../services/TodoService';
-import { Todo } from '../../interfaces/Todo';
+import { TodoService } from '../../Services/TodoService';
+import { Todo } from '../../Interfaces/Todo';
 import Swal from 'sweetalert2';
 
 interface CreateTodoProps {

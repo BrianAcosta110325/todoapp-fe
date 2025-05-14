@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CheckboxDropdown from './ChekboxDropdown';
-import { QueryParams } from '../../interfaces/QueryParams';
+import { QueryParams } from '../../Interfaces/QueryParams';
 
 interface FilterProps {
   onApplyFilter: (filterData: QueryParams) => void;
