@@ -8,6 +8,7 @@ import { QueryParams } from '../../Interfaces/QueryParams';
 import Metrics from '../Metrics/Metrics';
 import { TodoService } from '../../Services/TodoService';
 import LoadingScreen from '../../Utils/LoadingScreen';
+import { buildQueryParams } from '../../Utils/QueryHelper';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -32,26 +33,10 @@ function App() {
   const applyFilter = React.useCallback(() => {
     setLoading(true);
   
-    const queryParams: QueryParams = {
-      page: page.toString(),
-      text: filterParams.text,
-    };
-  
-    if (filterParams.completed) {
-      queryParams.completed = filterParams.completed;
-    }
-  
-    if (filterParams.priorities) {
-      queryParams.priorities = filterParams.priorities;
-    }
-  
-    if (filterParams.prioritySort !== "") {
-      queryParams.prioritySort = filterParams.prioritySort;
-    }
-  
-    if (filterParams.dueDateSort !== "") {
-      queryParams.dueDateSort = filterParams.dueDateSort;
-    }
+    const queryParams = buildQueryParams({
+      ...filterParams,
+      page: page.toString() 
+    });
   
     TodoService.getTodos(queryParams).then((response) => {
       setTodos(response.data);

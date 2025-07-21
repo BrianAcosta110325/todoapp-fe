@@ -1,9 +1,7 @@
-import { QueryParams } from "../Interfaces/QueryParams";
-
 const API_URL = "http://localhost:9090/api"
 
 export const Api = {
-  get: async (path: string, params?: QueryParams) => {
+  get: async (path: string, params?: String) => {
     const queryParams = params
       ? new URLSearchParams(params as Record<string, any>)
       : '';

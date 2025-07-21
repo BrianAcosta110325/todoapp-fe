@@ -1,9 +1,8 @@
-import { QueryParams } from "../Interfaces/QueryParams"
 import { Todo } from "../Interfaces/Todo"
 import { Api } from "./Api"
 
 export const TodoService = {
-    getTodos: async (params?: QueryParams) => {
+    getTodos: async (params?: String) => {
         return Api.get(`todos`, params)
     },
 
