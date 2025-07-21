@@ -24,8 +24,8 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
   // State to control the visibility of the form
   const [isFormVisible, setIsFormVisible] = React.useState(false);
   // Sort data
-  const [dueDateSort, setDueDateSort] = useState<String>("");
-  const [prioritySort, setPrioritySort] = useState<String>("");
+  const [dueDateSort, setDueDateSort] = useState<'' | 'asc' | 'desc'>('');
+  const [prioritySort, setPrioritySort] = useState<'' | 'asc' | 'desc'>('');
 
   // Input data
   const [editTodo, setEditTodo] = useState<Todo>({
@@ -39,7 +39,7 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
 
   // Function to handle edit form
   const submitForm = () => {
-    TodoService.updateTodo(editTodo).then((response: any) => {
+    TodoService.updateTodo(editTodo).then(() => {
       setIsFormVisible(false);
       onEditTodo();
       Swal.fire({
@@ -108,12 +108,15 @@ function List({ onEditTodo, todos, pagination, onApplySort }: ListProps) {
   const handleSort = (field: string) => {
     let newPrioritySort = prioritySort;
     let newDueDateSort = dueDateSort;
+
+    const toggleSortDirection = (current: '' | 'asc' | 'desc'): 'asc' | 'desc' =>
+      current === 'asc' ? 'desc' : 'asc';
   
     if (field === "priority") {
-      newPrioritySort = prioritySort === "asc" ? "desc" : "asc";
-      setPrioritySort(newPrioritySort);
+      const newDirection = toggleSortDirection(prioritySort);
+      setPrioritySort(newDirection);
     } else if (field === "dueDate") {
-      newDueDateSort = dueDateSort === "asc" ? "desc" : "asc";
+      const newDueDateSort = toggleSortDirection(dueDateSort);
       setDueDateSort(newDueDateSort);
     }
   
