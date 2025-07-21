@@ -5,6 +5,7 @@ import { QueryParams } from '../../Interfaces/QueryParams';
 
 interface FilterProps {
   onApplyFilter: (filterData: QueryParams) => void;
+  loading: boolean;
 }
 
 interface CheckboxOption {
@@ -12,7 +13,7 @@ interface CheckboxOption {
   checked: boolean;
 }
 
-function Filter({ onApplyFilter }: FilterProps) {
+function Filter({ onApplyFilter, loading }: FilterProps) {
   const [searchText, setSearchText] = useState("");
 
   const [priorities, setPriorities] = useState([
@@ -85,8 +86,9 @@ function Filter({ onApplyFilter }: FilterProps) {
               type="button"
               onClick={applyFilter}
               style={{ width: '100px' }}
+              disabled={loading}
             >
-              Search
+              {loading ? 'Filtering...' : 'Apply Filter'}
             </button>
           </div>
         </div>

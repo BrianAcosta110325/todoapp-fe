@@ -31,7 +31,7 @@ describe('Filter component', () => {
   it('should call onApplyFilter with correct query params when Search is clicked', () => {
     const mockApplyFilter = jest.fn();
 
-    render(<Filter onApplyFilter={mockApplyFilter} />);
+    render(<Filter onApplyFilter={mockApplyFilter} loading={false} />);
 
     const input = screen.getByPlaceholderText('Search by text...');
     fireEvent.change(input, { target: { value: 'test todo' } });
@@ -55,7 +55,7 @@ describe('Filter component', () => {
   it('should omit completed if both status are checked', () => {
     const mockApplyFilter = jest.fn();
 
-    render(<Filter onApplyFilter={mockApplyFilter} />);
+    render(<Filter onApplyFilter={mockApplyFilter} loading={false} />);
 
     fireEvent.click(screen.getByLabelText('Done'));
     fireEvent.click(screen.getByLabelText('Undone'));
@@ -70,7 +70,7 @@ describe('Filter component', () => {
   it('should omit priorities if none are selected', () => {
     const mockApplyFilter = jest.fn();
 
-    render(<Filter onApplyFilter={mockApplyFilter} />);
+    render(<Filter onApplyFilter={mockApplyFilter} loading={false} />);
 
     fireEvent.click(screen.getByLabelText('Done'));
 

@@ -9,6 +9,7 @@ import Metrics from '../Metrics/Metrics';
 import { TodoService } from '../../Services/TodoService';
 import LoadingScreen from '../../Utils/LoadingScreen';
 import { buildQueryParams } from '../../Utils/QueryHelper';
+import { MetricsState } from '../../Interfaces/metricState';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -20,7 +21,7 @@ function App() {
   const [filterParams, setFilterParams] = useState<QueryParams>({ text: '' });
 
   // Metrics
-  const [metrics, setMetrics] = useState({
+  const [metrics, setMetrics] = useState<MetricsState>({
     averageTimeDifference: '',
     averageLowTimeDifference: '',
     averageMediumTimeDifference: '',
@@ -28,31 +29,35 @@ function App() {
   });
 
   // Loading state
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const applyFilter = React.useCallback(() => {
     setLoading(true);
-  
+
     const queryParams = buildQueryParams({
       ...filterParams,
-      page: page.toString() 
+      page: page.toString(),
     });
-  
-    TodoService.getTodos(queryParams).then((response) => {
-      setTodos(response.data);
-      setTotalPages(response.totalPages);
-      setMetrics({
-        averageTimeDifference: response.averageTimeDifference,
-        averageLowTimeDifference: response.averageLowTimeDifference,
-        averageMediumTimeDifference: response.averageMediumTimeDifference,
-        averageHighTimeDifference: response.averageHighTimeDifference,
-      });
 
-      setTimeout(() => {
+    TodoService.getTodos(queryParams)
+      .then((response) => {
+        setTodos(response.data);
+        setTotalPages(response.totalPages);
+        setMetrics({
+          averageTimeDifference: response.averageTimeDifference,
+          averageLowTimeDifference: response.averageLowTimeDifference,
+          averageMediumTimeDifference: response.averageMediumTimeDifference,
+          averageHighTimeDifference: response.averageHighTimeDifference,
+        });
+      })
+      .catch((error) => {
+        console.error('Error fetching todos:', error);
+        // Optionally handle error UI here
+      })
+      .finally(() => {
         setLoading(false);
-      }, 200);
-    });
-  }, [page, filterParams]);  
+      });
+  }, [page, filterParams]);
 
   // Reapply the filter whenever the page changes
   useEffect(() => {
@@ -71,6 +76,7 @@ function App() {
           }));
           setPage(0);
         }}
+        loading={loading}  // pass loading state here if Filter accepts it
       />
       <CreateTodo 
         onCreateTodo={() => {
