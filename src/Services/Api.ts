@@ -45,6 +45,21 @@ export const Api = {
     return data;
   },
 
+  patch: async (path: string, body?: any) => {
+    const response = await fetch(`${API_URL}/${path}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+
+    return data;
+  },
+
   delete: async (path: string) => {
     const response = await fetch(`${API_URL}/${path}`, {
       method: 'DELETE',

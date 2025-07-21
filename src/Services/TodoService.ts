@@ -12,15 +12,15 @@ export const TodoService = {
     },
 
     updateTodo: async (todo: Todo) => {
-        return Api.put(`todos/${todo.id}`, todo)
+        return Api.patch(`todos/${todo.id}`, todo)
     },
 
     setAsDone: async (id: number) => {
-        return Api.post(`todos/${id}/done`)
+    return Api.patch(`todos/${id}/completed`);
     },
 
     setAsUndone: async (id: number) => {
-        return Api.put(`todos/${id}/undone`)
+    return Api.patch(`todos/${id}/completed`);
     },
 
     deleteTodo: async (id: number) => {
