@@ -1,9 +1,7 @@
-import { QueryParams } from "../Interfaces/QueryParams";
-
 const API_URL = "http://localhost:9090/api"
 
 export const Api = {
-  get: async (path: string, params?: QueryParams) => {
+  get: async (path: string, params?: String) => {
     const queryParams = params
       ? new URLSearchParams(params as Record<string, any>)
       : '';
@@ -42,6 +40,21 @@ export const Api = {
       throw new Error(data.message || 'Something went wrong');
     }
     
+    return data;
+  },
+
+  patch: async (path: string, body?: any) => {
+    const response = await fetch(`${API_URL}/${path}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+
     return data;
   },
 
